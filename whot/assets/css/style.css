@@ -1,0 +1,51 @@
+.container-1,.container-2,.container-3,.container-4,.container-5{
+    border: 2px solid black;
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.flex-box-container-1,.flex-box-pick-color,
+.flex-whot-row-1,.flex-whot-row-2,.flex-whot-row-3{
+    display: flex;
+    border: 1px solid black;
+    padding: 10px;
+    flex-wrap: wrap;/*to make it not exceed the width when pic or content is too much fo rthe width it starts a new line*/
+    flex-direction: row;
+    justify-content: space-around;
+    color: black;
+}
+.flex-whot-row-1,.flex-whot-row-2{
+    background: url('../Images/background.png');
+    /* color: #ffffffff; */
+}
+.whotspace{   
+    /* flex-wrap: wrap;
+    justify-content: space-around;  
+    min-height: 500px;   */
+
+}
+.flex-whot-row-1 div{
+    padding: 10px;
+    border: 1px solid black;
+    flex: 1;
+    text-align: center;
+    height: 350px;
+    
+}
+.flex-whot-row-1 img{
+    width: 25%;
+    padding: 10px;
+}
+.flex-whot-row-2 button{
+    /* border: 1px solid black; */
+    padding: 10px;
+}
+.flex-whot-row-2 div{
+    border: 1px solid black;
+    padding: 10px;
+}
+table, th{
+    padding: 5px;
+    border: 1px solid black;
+}
