@@ -2,7 +2,7 @@ let displayBoard = document.querySelector('#whot-display');
 let humanSide = document.querySelector('#your-box');
 let aiSide = document.querySelector('#ai-box');
 let user = [humanSide, aiSide];
-let pickedUser = user[0];
+let pickedUser = humanSide; // Default to player
 let normalSound = new Audio('assets/sounds/swish.m4a');
 
 // Store the current card in play
@@ -41,26 +41,48 @@ function generateCard(target, isInitial = false) {
 }
 
 function playCard(card, playerSide) {
-    // Check if the card matches the current card in play
     if (
         card.dataset.number === currentCard.dataset.number ||
         card.dataset.shape === currentCard.dataset.shape
     ) {
-        // Remove the card from the player's hand and move it to the display area
         currentCard.remove();
         currentCard = card;
         playerSide.removeChild(card);
         displayBoard.appendChild(card);
 
-        // Check for win condition
         checkWin(playerSide);
 
-        // AI Turn
         if (playerSide === humanSide) {
+            pickedUser = aiSide;
             setTimeout(aiPlay, 1000);
         }
     } else {
         alert('Invalid move! Card must match by number or shape.');
+    }
+}
+
+function market() {
+    // Generate a random card
+    let cardImage = document.createElement('img');
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    let card = numbers[Math.floor(Math.random() * numbers.length)];
+    let shapeArray = ['square', 'circle', 'triangle', 'star'];
+    let shapeImage = shapeArray[Math.floor(Math.random() * shapeArray.length)];
+    cardImage.src = `assets/images/${card}${shapeImage}.png`;
+    cardImage.dataset.number = card;
+    cardImage.dataset.shape = shapeImage;
+
+    // Add card to the current user's hand
+    pickedUser.appendChild(cardImage);
+    normalSound.play();
+
+    // If the user is human, attach event listener
+    if (pickedUser === humanSide) {
+        cardImage.addEventListener('click', function () {
+            playCard(this, pickedUser);
+        });
+        pickedUser = aiSide; // Switch to AI after market
+        setTimeout(aiPlay, 1000);
     }
 }
 
@@ -79,13 +101,8 @@ function aiPlay() {
             return;
         }
     }
-    // If no valid card, AI goes to market
-    market(aiSide);
-}
-
-function market(target) {
-    generateCard(target);
-    normalSound.play();
+    // If no valid card, AI picks a card from the market
+    market();
 }
 
 function reset() {
@@ -93,8 +110,8 @@ function reset() {
     aiSide.innerHTML = '<h2>AI</h2>';
     displayBoard.innerHTML = '';
     currentCard = null;
+    pickedUser = humanSide;
 }
-
 
 function checkWin(playerSide) {
     if (playerSide.querySelectorAll('img').length === 0) {
