@@ -2,7 +2,6 @@ let displayBoard = document.querySelector('#whot-display');
 let humanSide = document.querySelector('#your-box');
 let aiSide = document.querySelector('#ai-box');
 let user = [humanSide, aiSide];
-let pickedUser = user[0];
 let normalSound = new Audio('assets/sounds/swish.m4a');
 
 // Store the current card in play
@@ -64,23 +63,19 @@ function playCard(card, playerSide) {
     }
 }
 
-function market(target) {
-    // Add a card to the player or AI's hand
-    generateCard(target);
+function marketButtonPressed() {
+    // Add a random card to the player's hand
+    generateCard(humanSide);
     normalSound.play();
 
-    if (target === humanSide) {
-        alert('You picked a card from the market.');
-    } else {
-        console.log('AI picked a card from the market.');
-    }
+    // AI Turn after the player picks a card
+    setTimeout(aiPlay, 1000);
 }
 
-function marketButtonPressed() {
-    // Allow the player to draw from the market if no card matches
-    market(humanSide);
-    // After the player picks a card, the turn moves to AI
-    setTimeout(aiPlay, 1000);
+function marketAI() {
+    // Add a random card to the AI's hand
+    generateCard(aiSide);
+    console.log('AI picked a card from the market.');
 }
 
 function aiPlay() {
@@ -99,7 +94,7 @@ function aiPlay() {
         }
     }
     // If no valid card, AI goes to market
-    market(aiSide);
+    marketAI();
 }
 
 function reset() {
