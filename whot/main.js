@@ -2,6 +2,7 @@ let displayBoard = document.querySelector('#whot-display');
 let humanSide = document.querySelector('#your-box');
 let aiSide = document.querySelector('#ai-box');
 let user = [humanSide, aiSide];
+let pickedUser = user[0];
 let normalSound = new Audio('assets/sounds/swish.m4a');
 
 // Store the current card in play
@@ -63,21 +64,6 @@ function playCard(card, playerSide) {
     }
 }
 
-function marketButtonPressed() {
-    // Add a random card to the player's hand
-    generateCard(humanSide);
-    normalSound.play();
-
-    // AI Turn after the player picks a card
-    setTimeout(aiPlay, 1000);
-}
-
-function marketAI() {
-    // Add a random card to the AI's hand
-    generateCard(aiSide);
-    console.log('AI picked a card from the market.');
-}
-
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
     for (let i = 0; i < aiCards.length; i++) {
@@ -94,7 +80,12 @@ function aiPlay() {
         }
     }
     // If no valid card, AI goes to market
-    marketAI();
+    market(aiSide);
+}
+
+function market(target) {
+    generateCard(target);
+    normalSound.play();
 }
 
 function reset() {
@@ -103,6 +94,7 @@ function reset() {
     displayBoard.innerHTML = '';
     currentCard = null;
 }
+
 
 function checkWin(playerSide) {
     if (playerSide.querySelectorAll('img').length === 0) {
