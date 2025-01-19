@@ -72,21 +72,22 @@ function market() {
     cardImage.dataset.number = card;
     cardImage.dataset.shape = shapeImage;
 
-    // Add card to the current user's hand
+    // Add card to the current user's hand (human player)
     pickedUser.appendChild(cardImage);
     normalSound.play();
 
-    // If the user is human, attach event listener
+    // If the user is human, attach event listener for playing the card
     if (pickedUser === humanSide) {
         cardImage.addEventListener('click', function () {
             playCard(this, pickedUser);
         });
-    } else {
-        // If it's AI's turn, it should automatically play after the market
-        setTimeout(aiPlay, 1000);
     }
-    
+
+    // Switch to AI side and make the AI play automatically
+    pickedUser = aiSide;
+    setTimeout(aiPlay, 1000); // AI plays automatically after a delay
 }
+
 
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
