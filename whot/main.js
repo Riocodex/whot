@@ -136,13 +136,15 @@ function reset() {
 function checkWin(playerSide) {
     if (playerSide.querySelectorAll('img').length === 0) {
         if (playerSide === humanSide) {
+            winSound.play()
             alert('You win!');
             updateScore('wins');
-            winSound.play()
+            
         } else {
+            looseSound.play()
             alert('AI wins!');
             updateScore('losses');
-            looseSound.play()
+            
         }
         reset();
     }
