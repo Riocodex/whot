@@ -53,16 +53,18 @@ function playCard(card, playerSide) {
         checkWin(playerSide);
 
         if (playerSide === humanSide) {
-            pickedUser = aiSide; // Now switch to AI side after human move
+            pickedUser = aiSide; // Switch to AI side after human move
             setTimeout(aiPlay, 1000); // AI plays automatically
         }
     } else {
-        alert('Invalid move! Card must match by number or shape.');
+        // No valid card, go to market
+        alert('No matching card, going to market!');
+        market();
     }
 }
 
 function market() {
-    // Generate a random card
+    // Generate a random card for the player (human)
     let cardImage = document.createElement('img');
     let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     let card = numbers[Math.floor(Math.random() * numbers.length)];
@@ -72,22 +74,21 @@ function market() {
     cardImage.dataset.number = card;
     cardImage.dataset.shape = shapeImage;
 
-    // Add card to the current user's hand (human player)
+    // Add the card to the human player's hand
     pickedUser.appendChild(cardImage);
     normalSound.play();
 
     // If the user is human, attach event listener for playing the card
     if (pickedUser === humanSide) {
         cardImage.addEventListener('click', function () {
-            playCard(this, pickedUser);
+            playCard(this, pickedUser); // Human plays the card
         });
     }
 
-    // Switch to AI side and make the AI play automatically
+    // After the human picks a card, switch to AI's turn
     pickedUser = aiSide;
     setTimeout(aiPlay, 1000); // AI plays automatically after a delay
 }
-
 
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
@@ -101,6 +102,8 @@ function aiPlay() {
             aiSide.removeChild(aiCards[i]);
             displayBoard.appendChild(aiCards[i]);
             checkWin(aiSide);
+            // After AI plays, switch back to human's turn
+            pickedUser = humanSide;
             return;
         }
     }
