@@ -64,7 +64,7 @@ function playCard(card, playerSide) {
 }
 
 function market() {
-    // Generate a random card for the player (human)
+    // Generate a random card for the player (human or AI)
     let cardImage = document.createElement('img');
     let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     let card = numbers[Math.floor(Math.random() * numbers.length)];
@@ -74,7 +74,7 @@ function market() {
     cardImage.dataset.number = card;
     cardImage.dataset.shape = shapeImage;
 
-    // Add the card to the human player's hand
+    // Add the card to the current user's hand (human or AI)
     pickedUser.appendChild(cardImage);
     normalSound.play();
 
@@ -92,6 +92,8 @@ function market() {
 
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
+    let hasValidCard = false;
+
     for (let i = 0; i < aiCards.length; i++) {
         if (
             aiCards[i].dataset.number === currentCard.dataset.number ||
@@ -102,13 +104,20 @@ function aiPlay() {
             aiSide.removeChild(aiCards[i]);
             displayBoard.appendChild(aiCards[i]);
             checkWin(aiSide);
-            // After AI plays, switch back to human's turn
-            pickedUser = humanSide;
-            return;
+            hasValidCard = true;
+            break;
         }
     }
-    // If no valid card, AI picks a card from the market
-    market();
+
+    if (!hasValidCard) {
+        // If no valid card, AI goes to market
+        alert('AI has no matching card, going to market!');
+        market();
+    }
+    // If AI plays a card, it switches back to human's turn
+    else {
+        pickedUser = humanSide; // Switch back to human
+    }
 }
 
 function reset() {
