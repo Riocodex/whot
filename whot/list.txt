@@ -21,6 +21,11 @@ function play() {
 }
 
 function generateCard(target, isInitial = false) {
+    if (!target || !(target instanceof HTMLElement)) {
+        console.error("Invalid target passed to generateCard:", target);
+        return; // Exit the function if the target is invalid
+    }
+
     let cardImage = document.createElement('img');
     let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     let card = numbers[Math.floor(Math.random() * numbers.length)];
@@ -39,6 +44,7 @@ function generateCard(target, isInitial = false) {
         target.appendChild(cardImage);
     }
 }
+
 
 function playCard(card, playerSide) {
     if (
