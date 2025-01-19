@@ -85,9 +85,9 @@ function market() {
         });
     }
 
-    // After the human picks a card, switch to AI's turn
-    pickedUser = aiSide;
-    setTimeout(aiPlay, 1000); // AI plays automatically after a delay
+    // After the player (human or AI) goes to market, switch to the opponent
+    pickedUser = (pickedUser === humanSide) ? aiSide : humanSide;
+    setTimeout(pickedUser === aiSide ? aiPlay : humanPlay, 1000); // Switch to AI or human depending on the current user
 }
 
 function aiPlay() {
