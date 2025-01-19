@@ -85,7 +85,7 @@ function market() {
         // If it's AI's turn, it should automatically play after the market
         setTimeout(aiPlay, 1000);
     }
-    aiPlay()
+    
 }
 
 function aiPlay() {
