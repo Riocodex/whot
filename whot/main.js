@@ -64,6 +64,25 @@ function playCard(card, playerSide) {
     }
 }
 
+function market(target) {
+    // Add a card to the player or AI's hand
+    generateCard(target);
+    normalSound.play();
+
+    if (target === humanSide) {
+        alert('You picked a card from the market.');
+    } else {
+        console.log('AI picked a card from the market.');
+    }
+}
+
+function marketButtonPressed() {
+    // Allow the player to draw from the market if no card matches
+    market(humanSide);
+    // After the player picks a card, the turn moves to AI
+    setTimeout(aiPlay, 1000);
+}
+
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
     for (let i = 0; i < aiCards.length; i++) {
@@ -81,11 +100,6 @@ function aiPlay() {
     }
     // If no valid card, AI goes to market
     market(aiSide);
-}
-
-function market(target) {
-    generateCard(target);
-    normalSound.play();
 }
 
 function reset() {
