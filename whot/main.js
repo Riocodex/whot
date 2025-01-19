@@ -4,6 +4,8 @@ let aiSide = document.querySelector('#ai-box');
 let user = [humanSide, aiSide];
 let pickedUser = humanSide; // Default to player
 let normalSound = new Audio('assets/sounds/swish.m4a');
+let winSound = new Audio('assets/sounds/cash.mp3')
+let looseSound = new Audio('assets/sounds/aww.mp3')
 
 // Store the current card in play
 let currentCard = null;
@@ -38,6 +40,7 @@ function generateCard(target, isInitial = false) {
         });
         target.appendChild(cardImage);
     }
+    normalSound.play();
 }
 
 function playCard(card, playerSide) {
@@ -60,6 +63,7 @@ function playCard(card, playerSide) {
         // No valid card, go to market
         market();
     }
+    normalSound.play();
 }
 
 function market() {
@@ -87,6 +91,7 @@ function market() {
     // After the player (human or AI) goes to market, switch to the opponent
     pickedUser = (pickedUser === humanSide) ? aiSide : humanSide;
     setTimeout(pickedUser === aiSide ? aiPlay : humanPlay, 1000); // Switch to AI or human depending on the current user
+    normalSound.play();
 }
 
 function aiPlay() {
@@ -116,6 +121,7 @@ function aiPlay() {
     else {
         pickedUser = humanSide; // Switch back to human
     }
+    normalSound.play();
 }
 
 function reset() {
@@ -124,6 +130,7 @@ function reset() {
     displayBoard.innerHTML = '';
     currentCard = null;
     pickedUser = humanSide;
+    normalSound.play();
 }
 
 function checkWin(playerSide) {
@@ -131,9 +138,11 @@ function checkWin(playerSide) {
         if (playerSide === humanSide) {
             alert('You win!');
             updateScore('wins');
+            winSound.play()
         } else {
             alert('AI wins!');
             updateScore('losses');
+            looseSound.play()
         }
         reset();
     }
