@@ -61,6 +61,7 @@ function playCard(card, playerSide) {
     }
 }
 
+// Market function
 function market() {
     // Generate a random card
     let cardImage = document.createElement('img');
@@ -81,11 +82,11 @@ function market() {
         cardImage.addEventListener('click', function () {
             playCard(this, pickedUser);
         });
-        pickedUser = aiSide; // Switch to AI after market
+    } else {
+        // If it's AI's turn, it should automatically play after the market
         setTimeout(aiPlay, 1000);
     }
 }
-
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
     for (let i = 0; i < aiCards.length; i++) {
