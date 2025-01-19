@@ -3,3 +3,23 @@ market..
 playing...
 reseting...
 gameplay....
+
+
+function market(){
+    //generating random cards
+    let cardImage=document.createElement('img');
+    numbers=[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+    card=numbers[Math.floor(Math.random()*14)]
+    shapeArray=['square','circle','triangle','star']
+    shapeImage=shapeArray[Math.floor(Math.random()*4 )]
+    cardImage.src=`assets/images/${card}${shapeImage}.png`
+
+    //to stop repetition of cards
+    // let uniqueCard=[] 
+    // uniqueCard.push(card,shapeImage)
+    // if(card==uniqueCard[0] || shapeImage==uniqueCard[1]){
+    //     console.log('repetition')
+    // }
+        pickedUser.appendChild(cardImage);
+        normalSound.play()
+}

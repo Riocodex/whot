@@ -1,86 +1,114 @@
-var displayTest=0
-displayBoard=document.querySelector('#whot-display')
-// displayBoard.style.display='none'
-humanSide=document.querySelector('#your-box')
-aiSide=document.querySelector('#ai-box')
-user=[humanSide,aiSide]
-pickedUser=user[0]
-console.log(pickedUser)
-console.log(displayBoard)
+let displayBoard = document.querySelector('#whot-display');
+let humanSide = document.querySelector('#your-box');
+let aiSide = document.querySelector('#ai-box');
+let user = [humanSide, aiSide];
+let pickedUser = user[0];
+let normalSound = new Audio('assets/sounds/swish.m4a');
 
-//sound variables
-normalSound=new Audio('assets/sounds/swish.m4a')
+// Store the current card in play
+let currentCard = null;
 
-//displaying number of cards according to the user
-function play(cardNumbers){
-    var cardNumbers=prompt('how many cards do you want to start with')
-    for(i=0;i<cardNumbers ;i++){
-        let cardImage=document.createElement('img');
-        let cardImage_ai=document.createElement('img')
-        numbers=[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-        card=numbers[Math.floor(Math.random()*14)]
-        shapeArray=['square','circle','triangle','star']
-        shapeImage=shapeArray[Math.floor(Math.random()*4 )]
-        cardImage.src=`assets/images/${card}${shapeImage}.png`
-        cardImage_ai.src = `assets/images/${card}${shapeImage}.png`
-        // user.forEach(items => {
-        //     items.appendChild(cardImage)
-        // });
-        user[1].appendChild(cardImage);
-        user[0].appendChild(cardImage_ai);
-        normalSound.play()
-        gamePlay()
-       
+function play() {
+    let cardNumbers = prompt('How many cards do you want to start with?');
+    for (let i = 0; i < cardNumbers; i++) {
+        generateCard(humanSide);
+        generateCard(aiSide);
+    }
+    // Initialize the first card in the display area
+    generateCard(displayBoard, true);
+    currentCard = displayBoard.querySelector('img');
+    normalSound.play();
+}
+
+function generateCard(target, isInitial = false) {
+    let cardImage = document.createElement('img');
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    let card = numbers[Math.floor(Math.random() * numbers.length)];
+    let shapeArray = ['square', 'circle', 'triangle', 'star'];
+    let shapeImage = shapeArray[Math.floor(Math.random() * shapeArray.length)];
+    cardImage.src = `assets/images/${card}${shapeImage}.png`;
+    cardImage.dataset.number = card;
+    cardImage.dataset.shape = shapeImage;
+
+    if (isInitial) {
+        target.appendChild(cardImage);
+    } else {
+        cardImage.addEventListener('click', function () {
+            playCard(this, target);
+        });
+        target.appendChild(cardImage);
     }
 }
 
-function market(){
-    //generating random cards
-    let cardImage=document.createElement('img');
-    numbers=[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-    card=numbers[Math.floor(Math.random()*14)]
-    shapeArray=['square','circle','triangle','star']
-    shapeImage=shapeArray[Math.floor(Math.random()*4 )]
-    cardImage.src=`assets/images/${card}${shapeImage}.png`
+function playCard(card, playerSide) {
+    // Check if the card matches the current card in play
+    if (
+        card.dataset.number === currentCard.dataset.number ||
+        card.dataset.shape === currentCard.dataset.shape
+    ) {
+        // Remove the card from the player's hand and move it to the display area
+        currentCard.remove();
+        currentCard = card;
+        playerSide.removeChild(card);
+        displayBoard.appendChild(card);
 
-    //to stop repetition of cards
-    // let uniqueCard=[] 
-    // uniqueCard.push(card,shapeImage)
-    // if(card==uniqueCard[0] || shapeImage==uniqueCard[1]){
-    //     console.log('repetition')
-    // }
-        pickedUser.appendChild(cardImage);
-        normalSound.play()
-    
-   
+        // Check for win condition
+        checkWin(playerSide);
+
+        // AI Turn
+        if (playerSide === humanSide) {
+            setTimeout(aiPlay, 1000);
+        }
+    } else {
+        alert('Invalid move! Card must match by number or shape.');
+    }
 }
-//reseting the game when player wins or looses or decides to quit halfway
+
+function aiPlay() {
+    let aiCards = aiSide.querySelectorAll('img');
+    for (let i = 0; i < aiCards.length; i++) {
+        if (
+            aiCards[i].dataset.number === currentCard.dataset.number ||
+            aiCards[i].dataset.shape === currentCard.dataset.shape
+        ) {
+            currentCard.remove();
+            currentCard = aiCards[i];
+            aiSide.removeChild(aiCards[i]);
+            displayBoard.appendChild(aiCards[i]);
+            checkWin(aiSide);
+            return;
+        }
+    }
+    // If no valid card, AI goes to market
+    market(aiSide);
+}
+
+function market(target) {
+    generateCard(target);
+    normalSound.play();
+}
+
 function reset() {
-    let yourImages=humanSide.querySelectorAll('img')
-    let aiImages=aiSide.querySelectorAll('img')
-        for(i=0;i<yourImages.length;i++){
-           yourImages[i].remove() 
-        } 
-        for(i=0;i<aiImages.length;i++){
-            aiImages[i].remove() 
-         } 
-    
-}
-function gamePlay(){
-    let yourImages=humanSide.querySelectorAll('img')
-    let aiImages=aiSide.querySelectorAll('img')
-    let whotDisplay=document.querySelector('#whot-display')
-
-   
-        yourImages[i].addEventListener('click',function(){
-            for(i=0;i<yourImages.length;i++){
-                yourImages[i].remove()
-                whotDisplay.appendChild(yourImages[i])
-            }
-
-        })
-      
+    humanSide.innerHTML = '<h2>You</h2>';
+    aiSide.innerHTML = '<h2>AI</h2>';
+    displayBoard.innerHTML = '';
+    currentCard = null;
 }
 
+function checkWin(playerSide) {
+    if (playerSide.querySelectorAll('img').length === 0) {
+        if (playerSide === humanSide) {
+            alert('You win!');
+            updateScore('wins');
+        } else {
+            alert('AI wins!');
+            updateScore('losses');
+        }
+        reset();
+    }
+}
 
-
+function updateScore(resultType) {
+    let scoreElement = document.querySelector(`#${resultType}`);
+    scoreElement.textContent = parseInt(scoreElement.textContent) + 1;
+}
