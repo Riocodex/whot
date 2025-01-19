@@ -58,7 +58,6 @@ function playCard(card, playerSide) {
         }
     } else {
         // No valid card, go to market
-        alert('No matching card, going to market!');
         market();
     }
 }
@@ -110,8 +109,7 @@ function aiPlay() {
     }
 
     if (!hasValidCard) {
-        // If no valid card, AI goes to market
-        alert('AI has no matching card, going to market!');
+        // If no valid card, AI goes to market and switches to human turn
         market();
     }
     // If AI plays a card, it switches back to human's turn
