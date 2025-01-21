@@ -7,6 +7,8 @@ let normalSound = new Audio('assets/sounds/swish.m4a');
 let winSound = new Audio('assets/sounds/cash.mp3')
 let looseSound = new Audio('assets/sounds/aww.mp3')
 
+let whotback = 'assets/images/whotback.png'
+
 // Store the current card in play
 let currentCard = null;
 
@@ -28,16 +30,28 @@ function generateCard(target, isInitial = false) {
     let card = numbers[Math.floor(Math.random() * numbers.length)];
     let shapeArray = ['square', 'circle', 'triangle', 'star'];
     let shapeImage = shapeArray[Math.floor(Math.random() * shapeArray.length)];
-    cardImage.src = `assets/images/${card}${shapeImage}.png`;
+    
+    // Assign the actual card details
     cardImage.dataset.number = card;
     cardImage.dataset.shape = shapeImage;
+    
+    // Show the front image for human or display board
+    if (target === humanSide || isInitial) {
+        cardImage.src = `assets/images/${card}${shapeImage}.png`;
+    } else {
+        // Show the back of the card for AI
+        cardImage.src = 'assets/images/whotback.png';
+    }
 
     if (isInitial) {
         target.appendChild(cardImage);
     } else {
-        cardImage.addEventListener('click', function () {
-            playCard(this, target);
-        });
+        if (target === humanSide) {
+            // Allow only human cards to be clickable
+            cardImage.addEventListener('click', function () {
+                playCard(this, target);
+            });
+        }
         target.appendChild(cardImage);
     }
     normalSound.play();
@@ -99,10 +113,14 @@ function aiPlay() {
     let hasValidCard = false;
 
     for (let i = 0; i < aiCards.length; i++) {
+        // Check if the AI card matches the current card
         if (
             aiCards[i].dataset.number === currentCard.dataset.number ||
             aiCards[i].dataset.shape === currentCard.dataset.shape
         ) {
+            // Reveal the AI card before playing
+            aiCards[i].src = `assets/images/${aiCards[i].dataset.number}${aiCards[i].dataset.shape}.png`;
+
             currentCard.remove();
             currentCard = aiCards[i];
             aiSide.removeChild(aiCards[i]);
@@ -116,10 +134,9 @@ function aiPlay() {
     if (!hasValidCard) {
         // If no valid card, AI goes to market and switches to human turn
         market();
-    }
-    // If AI plays a card, it switches back to human's turn
-    else {
-        pickedUser = humanSide; // Switch back to human
+    } else {
+        // Switch back to human's turn
+        pickedUser = humanSide;
     }
     normalSound.play();
 }
