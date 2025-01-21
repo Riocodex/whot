@@ -87,26 +87,29 @@ function market() {
     let card = numbers[Math.floor(Math.random() * numbers.length)];
     let shapeArray = ['square', 'circle', 'triangle', 'star'];
     let shapeImage = shapeArray[Math.floor(Math.random() * shapeArray.length)];
-    cardImage.src = `assets/images/${card}${shapeImage}.png`;
     cardImage.dataset.number = card;
     cardImage.dataset.shape = shapeImage;
 
-    // Add the card to the current user's hand (human or AI)
-    pickedUser.appendChild(cardImage);
-    normalSound.play();
-
-    // If the user is human, attach event listener for playing the card
-    if (pickedUser === humanSide) {
+    // If the current player is AI, show the back of the card
+    if (pickedUser === aiSide) {
+        cardImage.src = whotback;
+    } else {
+        // For the human player, show the actual card
+        cardImage.src = `assets/images/${card}${shapeImage}.png`;
         cardImage.addEventListener('click', function () {
             playCard(this, pickedUser); // Human plays the card
         });
     }
 
+    // Add the card to the current user's hand (human or AI)
+    pickedUser.appendChild(cardImage);
+    normalSound.play();
+
     // After the player (human or AI) goes to market, switch to the opponent
     pickedUser = (pickedUser === humanSide) ? aiSide : humanSide;
     setTimeout(pickedUser === aiSide ? aiPlay : humanPlay, 1000); // Switch to AI or human depending on the current user
-    normalSound.play();
 }
+
 
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
