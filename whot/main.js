@@ -127,7 +127,6 @@ function market() {
     setTimeout(pickedUser === aiSide ? aiPlay : humanPlay, 1000); // Switch to AI or human depending on the current user
 }
 
-
 function aiPlay() {
     let aiCards = aiSide.querySelectorAll('img');
     let hasValidCard = false;
@@ -150,10 +149,17 @@ function aiPlay() {
             hasValidCard = true;
 
             if (aiCards[i].dataset.number === "1") {
-                normalSound.play()
-                // AI plays again if it played a "1"
+                // If AI plays a "1", AI plays again
                 setTimeout(aiPlay, 1000);
-                return; // Exit the function to prevent switching to human turn
+                return; // Exit to prevent switching turns
+            }
+
+            if (aiCards[i].dataset.number === "14") {
+                // If AI plays a "14", human automatically picks a card
+                pickedUser = humanSide;
+                market(); // Human picks a card
+                setTimeout(aiPlay, 1000); // AI continues playing
+                return; // Exit to prevent switching turns
             }
 
             break;
@@ -169,6 +175,7 @@ function aiPlay() {
     }
     normalSound.play();
 }
+
 
 function reset() {
     humanSide.innerHTML = '<h2>You</h2>';
