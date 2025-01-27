@@ -138,7 +138,15 @@ function aiPlay() {
             aiSide.removeChild(aiCards[i]);
             displayBoard.appendChild(aiCards[i]);
             checkWin(aiSide);
+
             hasValidCard = true;
+
+            if (aiCards[i].dataset.number === "1") {
+                // AI plays again if it played a "1"
+                setTimeout(aiPlay, 1000);
+                return; // Exit the function to prevent switching to human turn
+            }
+
             break;
         }
     }
