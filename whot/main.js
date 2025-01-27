@@ -69,9 +69,17 @@ function playCard(card, playerSide) {
 
         checkWin(playerSide);
 
+        if (card.dataset.number === "1") {
+            normalSound.play();
+            // If the card number is 1, allow the player to play again
+            return; // Do not switch turn
+        }
+
         if (playerSide === humanSide) {
             pickedUser = aiSide; // Switch to AI side after human move
             setTimeout(aiPlay, 1000); // AI plays automatically
+        } else {
+            pickedUser = humanSide; // Switch to human side after AI move
         }
     } else {
         // No valid card, go to market
@@ -79,6 +87,7 @@ function playCard(card, playerSide) {
     }
     normalSound.play();
 }
+
 
 function market() {
     // Generate a random card for the player (human or AI)
