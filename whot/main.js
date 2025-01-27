@@ -81,7 +81,13 @@ function playCard(card, playerSide) {
             return; // Allow the current player to play again
         }
 
-        
+        if (card.dataset.number === "2") {
+            // If the card number is 14, opponent automatically goes to market
+            pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
+            market(); // Opponent picks a card
+            market(); 
+            return; // Allow the current player to play again
+        }
 
         // Switch turn to the next player
         if (playerSide === humanSide) {
