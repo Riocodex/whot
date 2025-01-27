@@ -70,16 +70,23 @@ function playCard(card, playerSide) {
         checkWin(playerSide);
 
         if (card.dataset.number === "1") {
-            normalSound.play();
             // If the card number is 1, allow the player to play again
             return; // Do not switch turn
         }
 
+        if (card.dataset.number === "14") {
+            // If the card number is 14, opponent automatically goes to market
+            pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
+            market(); // Opponent picks a card
+            return; // Allow the current player to play again
+        }
+
+        // Switch turn to the next player
         if (playerSide === humanSide) {
-            pickedUser = aiSide; // Switch to AI side after human move
+            pickedUser = aiSide;
             setTimeout(aiPlay, 1000); // AI plays automatically
         } else {
-            pickedUser = humanSide; // Switch to human side after AI move
+            pickedUser = humanSide;
         }
     } else {
         // No valid card, go to market
@@ -87,6 +94,7 @@ function playCard(card, playerSide) {
     }
     normalSound.play();
 }
+
 
 
 function market() {
@@ -142,6 +150,7 @@ function aiPlay() {
             hasValidCard = true;
 
             if (aiCards[i].dataset.number === "1") {
+                normalSound.play()
                 // AI plays again if it played a "1"
                 setTimeout(aiPlay, 1000);
                 return; // Exit the function to prevent switching to human turn
