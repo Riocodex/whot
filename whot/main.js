@@ -75,17 +75,20 @@ function playCard(card, playerSide) {
         }
 
         if (card.dataset.number === "14") {
-            // If the card number is 14, opponent automatically goes to market
+            // If the card number is 14, opponent automatically picks one card
             pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
-            market(); // Opponent picks a card
+            market(); // Opponent picks one card
             return; // Allow the current player to play again
         }
 
         if (card.dataset.number === "2") {
-            // If the card number is 14, opponent automatically goes to market
+            // If the card number is 2, opponent picks two cards
             pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
-            market(); // Opponent picks a card
-            market(); 
+            market(); // Opponent picks the first card
+            setTimeout(() => {
+                pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
+                market(); // Opponent picks the second card
+            }, 500); // Small delay for smooth gameplay
             return; // Allow the current player to play again
         }
 
@@ -102,6 +105,8 @@ function playCard(card, playerSide) {
     }
     normalSound.play();
 }
+
+
 
 
 
@@ -163,19 +168,22 @@ function aiPlay() {
             }
 
             if (aiCards[i].dataset.number === "14") {
-                // If AI plays a "14", human automatically picks a card
+                // If AI plays a "14", human automatically picks one card
                 pickedUser = humanSide;
-                market(); // Human picks a card
+                market(); // Human picks one card
                 setTimeout(aiPlay, 1000); // AI continues playing
                 return; // Exit to prevent switching turns
             }
 
             if (aiCards[i].dataset.number === "2") {
-                // If AI plays a "14", human automatically picks a card
+                // If AI plays a "2", human automatically picks two cards
                 pickedUser = humanSide;
-                market(); // Human picks a card
-                market();
-                setTimeout(aiPlay, 1000); // AI continues playing
+                market(); // Human picks the first card
+                setTimeout(() => {
+                    pickedUser = humanSide;
+                    market(); // Human picks the second card
+                    setTimeout(aiPlay, 1000); // AI continues playing
+                }, 500); // Small delay for smooth gameplay
                 return; // Exit to prevent switching turns
             }
 
@@ -192,6 +200,8 @@ function aiPlay() {
     }
     normalSound.play();
 }
+
+
 
 
 function reset() {
