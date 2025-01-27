@@ -81,6 +81,8 @@ function playCard(card, playerSide) {
             return; // Allow the current player to play again
         }
 
+        
+
         // Switch turn to the next player
         if (playerSide === humanSide) {
             pickedUser = aiSide;
@@ -158,6 +160,15 @@ function aiPlay() {
                 // If AI plays a "14", human automatically picks a card
                 pickedUser = humanSide;
                 market(); // Human picks a card
+                setTimeout(aiPlay, 1000); // AI continues playing
+                return; // Exit to prevent switching turns
+            }
+
+            if (aiCards[i].dataset.number === "2") {
+                // If AI plays a "14", human automatically picks a card
+                pickedUser = humanSide;
+                market(); // Human picks a card
+                market();
                 setTimeout(aiPlay, 1000); // AI continues playing
                 return; // Exit to prevent switching turns
             }
