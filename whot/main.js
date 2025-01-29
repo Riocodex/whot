@@ -81,12 +81,7 @@ function playCard(card, playerSide) {
             return; // Allow the current player to play again
         }
 
-        if (card.dataset.number === "2") {
-            // If the card number is 14, opponent automatically picks one card
-            pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
-            marketTwo(); // Opponent picks one card
-            return; // Allow the current player to play again
-        }
+       
 
         // Switch turn to the next player
         if (playerSide === humanSide) {
@@ -135,7 +130,6 @@ function market() {
     pickedUser = (pickedUser === humanSide) ? aiSide : humanSide;
     setTimeout(pickedUser === aiSide ? aiPlay : humanPlay, 1000); // Switch to AI or human depending on the current user
 }
-
 function marketTwo() {
     // Generate a random card for the player (human or AI)
     let cardImage = document.createElement('img');
@@ -202,15 +196,7 @@ function aiPlay() {
                 return; // Exit to prevent switching turns
             }
 
-            if (aiCards[i].dataset.number === "2") {
-                // If AI plays a "14", human automatically picks one card
-                pickedUser = humanSide;
-                marketTwo(); // Human picks one card
-                setTimeout(aiPlay, 1000); // AI continues playing
-                return; // Exit to prevent switching turns
-            }
-                return; // Exit to prevent switching turns
-            }
+           
 
             break;
         }
