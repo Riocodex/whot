@@ -1,54 +1,52 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+.container-1,.container-2,.container-3,.container-4,.container-5{
+    border: 2px solid black;
+    width: 75%;
+    margin: 0 auto;
     text-align: center;
-    padding: 20px;
 }
-.container {
-    max-width: 90%;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-.flex-whot-row {
+
+.flex-box-container-1,.flex-box-pick-color,
+.flex-whot-row-1,.flex-whot-row-2,.flex-whot-row-3{
     display: flex;
-    flex-wrap: wrap;
+    border: 1px solid black;
+    padding: 10px;
+    flex-wrap: wrap;/*to make it not exceed the width when pic or content is too much fo rthe width it starts a new line*/
+    flex-direction: row;
     justify-content: space-around;
-    align-items: center;
-    margin-top: 20px;
+    color: black;
 }
-.whotspace {
-    flex: 1;
-    min-width: 250px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 8px;
-    text-align: center;
+.flex-whot-row-1,.flex-whot-row-2{
+    background: url('../Images/background.png');
+    /* color: #ffffffff; */
 }
-.btn-container {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
+.whotspace{   
+    /* display: flex; */
+    flex-wrap: wrap;
+    justify-content: space-around;  
+    min-height: 500px;  
+
 }
-.btn {
-    padding: 10px 20px;
-    border-radius: 5px;
-}
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-th, td {
+.flex-whot-row-1 div{
     padding: 10px;
     border: 1px solid black;
+    flex: 1;
+    text-align: center;
+    height: 350px;
+    
 }
-@media (max-width: 768px) {
-    .flex-whot-row {
-        flex-direction: column;
-    }
+.flex-whot-row-1 img{
+    width: 25%;
+    padding: 10px;
+}
+.flex-whot-row-2 button{
+    /* border: 1px solid black; */
+    padding: 10px;
+}
+.flex-whot-row-2 div{
+    border: 1px solid black;
+    padding: 10px;
+}
+table, th{
+    padding: 5px;
+    border: 1px solid black;
 }

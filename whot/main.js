@@ -70,6 +70,7 @@ function playCard(card, playerSide) {
         checkWin(playerSide);
 
         if (card.dataset.number === "1") {
+            normalSound.play();
             // If the card number is 1, allow the player to play again
             return; // Do not switch turn
         }
@@ -78,6 +79,7 @@ function playCard(card, playerSide) {
             // If the card number is 14, opponent automatically picks one card
             pickedUser = (playerSide === humanSide) ? aiSide : humanSide;
             market(); // Opponent picks one card
+            normalSound.play();
             return; // Allow the current player to play again
         }
 
@@ -185,6 +187,7 @@ function aiPlay() {
             if (aiCards[i].dataset.number === "1") {
                 // If AI plays a "1", AI plays again
                 setTimeout(aiPlay, 1000);
+                normalSound.play();
                 return; // Exit to prevent switching turns
             }
 
@@ -193,6 +196,7 @@ function aiPlay() {
                 pickedUser = humanSide;
                 market(); // Human picks one card
                 setTimeout(aiPlay, 1000); // AI continues playing
+                normalSound.play();
                 return; // Exit to prevent switching turns
             }
 
