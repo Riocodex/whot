@@ -1,4 +1,4 @@
-how to play
+how to play!!
 
 press play to select how many cards you want to start with
 
